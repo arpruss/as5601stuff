@@ -1,6 +1,12 @@
 #include <Wire.h>
 
-// 20 SDA, 21 SCL on Mega
+// read angle and AGC from as5601
+// Mega: 20 SDA, 21 SCL
+// AS5601: 
+//  1 VDD5V (0.1uF to ground; +5V)   8 A   
+//  2 VDD3V3 (1uF to ground)         7 SCL
+//  3 PUSH                           6 SDA
+//  4 GND                            5 B
 
 const uint8_t deviceAddress = 0x36;
 const uint8_t reg_rawAngleHigh = 0x0C;
@@ -25,7 +31,7 @@ int getByte(uint8_t reg) {
   Wire.beginTransmission(deviceAddress);
   Wire.write(reg); // angle high
   Wire.endTransmission();
-  Wire.requestFrom(deviceAddress,1);
+  Wire.requestFrom(deviceAddress,(uint8_t)1);
   if (1<=Wire.available()) {
     return 0xFF & Wire.read();
   }
